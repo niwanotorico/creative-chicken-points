@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Creative Chicken Points</title>
+    <meta name="theme-color" content="#25735d" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Chicken Points" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="top">
+        <div>
+          <p class="eyebrow">3D printer time bank</p>
+          <h1>Creative Chicken Points</h1>
+        </div>
+        <button class="icon-button" id="exportButton" type="button" aria-label="記録を書き出す">
+          <span aria-hidden="true">↓</span>
+        </button>
+      </header>
+
+      <section class="balance-panel" aria-label="ポイント残高">
+        <label class="field compact">
+          <span>こども</span>
+          <select id="childFilter"></select>
+        </label>
+        <div class="balance-grid">
+          <div>
+            <span class="metric-label">ためたポイント</span>
+            <strong id="earnedTotal">0</strong>
+          </div>
+          <div>
+            <span class="metric-label">つかった時間</span>
+            <strong id="spentTotal">0分</strong>
+          </div>
+          <div class="highlight">
+            <span class="metric-label">使える3Dプリンター</span>
+            <strong id="balanceTotal">0分</strong>
+          </div>
+        </div>
+      </section>
+
+      <nav class="tabs" aria-label="入力切り替え">
+        <button class="tab active" type="button" data-mode="earn">作品ポイント</button>
+        <button class="tab" type="button" data-mode="spend">プリント記録</button>
+      </nav>
+
+      <form class="entry-form" id="entryForm">
+        <input type="hidden" id="entryMode" value="earn" />
+
+        <label class="field">
+          <span>こどもの名前</span>
+          <select id="childName" name="childName" required>
+            <option value="ぴよきち">ぴよきち</option>
+            <option value="ぴよみ">ぴよみ</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span id="titleLabel">作品名</span>
+          <input id="title" name="title" autocomplete="off" placeholder="例：宇宙のチキン城" required />
+        </label>
+
+        <div class="split">
+          <label class="field">
+            <span id="pointLabel">ポイント</span>
+            <input id="points" name="points" type="number" inputmode="numeric" min="1" max="240" value="5" required />
+          </label>
+
+          <label class="field">
+            <span>ジャンル</span>
+            <select id="category" name="category">
+              <option>絵</option>
+              <option>粘土</option>
+              <option>写真</option>
+              <option>アニメーション</option>
+              <option>3Dプリント</option>
+              <option>工作</option>
+              <option>その他</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="photo-box" for="photo">
+          <input id="photo" name="photo" type="file" accept="image/*" capture="environment" />
+          <img id="preview" alt="" hidden />
+          <span id="photoPrompt">写真を撮る / 選ぶ</span>
+        </label>
+
+        <label class="field">
+          <span>メモ</span>
+          <textarea id="note" name="note" rows="3" placeholder="がんばったところ、ひらめいたことなど"></textarea>
+        </label>
+
+        <button class="primary" type="submit" id="saveButton">ポイントを記録</button>
+      </form>
+
+      <section class="history-section">
+        <div class="section-heading">
+          <h2>記録</h2>
+          <button class="text-button" id="clearFilterButton" type="button">全員を見る</button>
+        </div>
+        <div class="empty" id="emptyState">
+          <strong>まだ記録がありません</strong>
+          <span>最初の作品を撮って、チキンポイントを入れましょう。</span>
+        </div>
+        <div class="history" id="history"></div>
+      </section>
+    </main>
+
+    <template id="recordTemplate">
+      <article class="record-card">
+        <img class="record-photo" alt="" />
+        <div class="record-body">
+          <div class="record-topline">
+            <span class="record-child"></span>
+            <span class="record-points"></span>
+          </div>
+          <h3></h3>
+          <p class="record-meta"></p>
+          <p class="record-note"></p>
+          <button class="delete-button" type="button">削除</button>
+        </div>
+      </article>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

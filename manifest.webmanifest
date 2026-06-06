@@ -1,0 +1,10 @@
+{
+  "name": "Creative Chicken Points",
+  "short_name": "Chicken Points",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fbfaf7",
+  "theme_color": "#25735d",
+  "lang": "ja",
+  "orientation": "portrait"
+}
