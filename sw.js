@@ -1,10 +1,6 @@
-const cacheName = "creative-chicken-points-v1";
-const files = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.webmanifest"];
-
-self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(cacheName).then((cache) => cache.addAll(files)));
-});
-
-self.addEventListener("fetch", (event) => {
-  event.respondWith(caches.match(event.request).then((cached) => cached || fetch(event.request)));
-});
+self.addEventListener('install', event => event.waitUntil(self.skipWaiting()));
+self.addEventListener('activate', event => event.waitUntil((async () => {
+  await Promise.all((await caches.keys()).filter(key => key.startsWith('creative-chicken-points-')).map(key => caches.delete(key)));
+  await self.clients.claim();
+})()));
+// Network-only: never serve obsolete UI or balances from this worker.

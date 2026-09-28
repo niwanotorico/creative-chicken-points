@@ -1,0 +1,4 @@
+const {chromium}=require('playwright');
+const assert=require('node:assert/strict');
+(async()=>{const browser=await chromium.launch({headless:true,channel:'msedge'});const pages=[];for(let i=0;i<2;i++){const context=await browser.newContext();const page=await context.newPage();await page.goto('http://127.0.0.1:4178/creative-chicken-points/');await page.waitForFunction(()=>document.querySelector('#connection').textContent==='最新のポイントに同期しています');pages.push(page);}const values=await Promise.all(pages.map(p=>p.locator('.balances strong').allTextContents()));assert.deepEqual(values[0],values[1]);console.log('PASS independent browser contexts, real Firestore anonymous read:',values);console.log('localStorage:',await pages[0].evaluate(()=>Object.keys(localStorage)));await browser.close()})().catch(e=>{console.error(e);process.exit(1)});
+
