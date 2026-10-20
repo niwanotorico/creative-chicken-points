@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, setPersistence, inMemoryPersistence } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js';
 import { getFirestore, collection, doc, setDoc, deleteDoc, serverTimestamp, onSnapshot } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js';
 import { children, isAdmin, validRecord, balances } from './ledger.mjs';
 const app = initializeApp({apiKey:'AIzaSyDZ9ejh0DacIkYsbn-heMSvY3W-v2DeFNQ',authDomain:'creative-chicken-points.firebaseapp.com',projectId:'creative-chicken-points',storageBucket:'creative-chicken-points.firebasestorage.app',messagingSenderId:'627959552960',appId:'1:627959552960:web:a101af5ea0c29ea1c14625'});
@@ -44,7 +44,7 @@ $('more').addEventListener('click',() => { visibleCount += 20; render(); });
 document.querySelectorAll('[data-points]').forEach(button => button.addEventListener('click',() => { $('points').value = button.dataset.points; }));
 $('login').addEventListener('click',async () => {
   $('login').disabled = true;
-  try { await setPersistence(auth,inMemoryPersistence); const provider = new GoogleAuthProvider(); provider.setCustomParameters({prompt:'select_account'}); await signInWithPopup(auth,provider); message(''); } catch(e) { message(errorText(e)); } finally { $('login').disabled = false; }
+  try { await setPersistence(auth,browserLocalPersistence); const provider = new GoogleAuthProvider(); provider.setCustomParameters({prompt:'select_account'}); await signInWithPopup(auth,provider); message(''); } catch(e) { message(errorText(e)); } finally { $('login').disabled = false; }
 });
 $('logout').addEventListener('click',async () => { try { await signOut(auth); message('ログアウトしました。'); } catch(e) { message(errorText(e)); } });
 onAuthStateChanged(auth,user => {
